@@ -20,22 +20,43 @@ MODEL_NAME = 'starganvc_model'
 def load_wavs(dataset: str, sr):
     '''
     data dict contains all audios file path &
-    resdict contains all wav files
+    resdict contains all wav files   
     '''
     data = {}
-    files = [f for f in glob.glob(os.path.join(dataset, "*/.wav"), recursive = True)]
+    with os.scandir(dataset) as it:
+        for entry in it:
+            if entry.is_dir():
+                data[entry.name] = []
+                # print(entry.name, entry.path)
+                with os.scandir(entry.path) as it_f:
+                    for onefile in it_f:
+                        if onefile.is_file():
+                            # print(onefile.path)
+                            data[entry.name].append(onefile.path)
+    print(f'loaded keys: {data.keys()}')
+    #data like {TM1:[xx,xx,xxx,xxx]}
     resdict = {}
-    for f in files:
-        person = f.split('/')[-1].split('_')[0]
-        print(f, end='\r')
-        filename = f.split('/')[-1].split('_')[1].split('.')[0]
-        if person not in resdict:
-            resdict[person] = {}
-        wav, sr = librosa.load(f, sr, mono=True, dtype=np.float64)
-        y,_ = librosa.effects.trim(wav, top_db=15)
-        wav = np.append(y[0], y[1:] - 0.97 * y[:-1])
-        resdict[person][f'{filename}'] = wav
+
+    cnt = 0
+    for key, value in data.items():
+        resdict[key] = {}
+
+        for one_file in value:
+            
+            filename = one_file.split('/')[-1].split('.')[0] #like 100061
+            newkey = f'{filename}'
+            wav, _ = librosa.load(one_file, sr=sr, mono=True, dtype=np.float64)
+            y,_ = librosa.effects.trim(wav, top_db=15)
+            wav = np.append(y[0], y[1:] - 0.97 * y[:-1])
+
+            resdict[key][newkey] = wav
+            # resdict[key].append(temp_dict) #like TM1:{100062:[xxxxx], .... }
+            print('.', end='')
+            cnt += 1
+
+    print(f'\nTotal {cnt} aduio files!')
     return resdict
+
 
 def chunks(iterable, size):
     """Yield successive n-sized chunks from iterable."""
