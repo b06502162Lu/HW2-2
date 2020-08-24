@@ -126,8 +126,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Convert the wav waveform to mel-cepstral coefficients(MCCs)\
     and calculate the speech statistical characteristics')
     
-    input_dir = './data/speakers'
-    output_dir = './data/processed'
+    input_dir = '/work/b07u1234/b06502162/HW2-2/HW2-2/pytorch-StarGAN-VC-master/data/speakers'
+    output_dir = '/work/b07u1234/b06502162/HW2-2/HW2-2/pytorch-StarGAN-VC-master/data/processed'
    
     parser.add_argument('--input_dir', type = str, help = 'the direcotry contains data need to be processed', default = input_dir)
     parser.add_argument('--output_dir', type = str, help = 'the directory stores the processed data', default = output_dir)
