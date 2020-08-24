@@ -16,47 +16,7 @@ SPEAKERS_NUM = len(speakers)
 CHUNK_SIZE = 1 # concate CHUNK_SIZE audio clips together
 EPSILON = 1e-10
 MODEL_NAME = 'starganvc_model'
-'''
-def load_wavs(dataset: str, sr):
-    
-    #data dict contains all audios file path &
-    #resdict contains all wav files   
-    
-    data = {}
-    with os.scandir(dataset) as it:
-        for entry in it:
-            if entry.is_dir():
-                data[entry.name] = []
-                # print(entry.name, entry.path)
-                with os.scandir(entry.path) as it_f:
-                    for onefile in it_f:
-                        if onefile.is_file():
-                            # print(onefile.path)
-                            data[entry.name].append(onefile.path)
-    print(f'loaded keys: {data.keys()}')
-    #data like {TM1:[xx,xx,xxx,xxx]}
-    resdict = {}
 
-    cnt = 0
-    for key, value in data.items():
-        resdict[key] = {}
-
-        for one_file in value:
-            
-            filename = one_file.split('/')[-1].split('.')[0] #like 100061
-            newkey = f'{filename}'
-            wav, _ = librosa.load(one_file, sr=sr, mono=True, dtype=np.float64)
-            y,_ = librosa.effects.trim(wav, top_db=15)
-            wav = np.append(y[0], y[1:] - 0.97 * y[:-1])
-
-            resdict[key][newkey] = wav
-            # resdict[key].append(temp_dict) #like TM1:{100062:[xxxxx], .... }
-            print('.', end='')
-            cnt += 1
-
-    print(f'\nTotal {cnt} aduio files!')
-    return resdict
-    '''
 def load_wavs(dataset: str, sr):
     '''
     data dict contains all audios file path &
@@ -132,7 +92,8 @@ def world_features(wav, sr, fft_size, dim):
     return f0, timeaxis, sp, ap, coded_sp
 
 def cal_mcep(wav, sr=SAMPLE_RATE, dim=FEATURE_DIM, fft_size=FFTSIZE):
-    '''cal mcep given wav singnal
+    '''
+    cal mcep given wav singnal
         the frame_period used only for pad_wav_to_get_fixed_frames
     '''
     f0, timeaxis, sp, ap, coded_sp = world_features(wav, sr, fft_size, dim)
