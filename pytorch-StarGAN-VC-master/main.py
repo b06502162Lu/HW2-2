@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     # Model configuration.
 
-    parser.add_argument('--lambda_cycle', type=float, default=3, help='weight for cycle loss')
+    parser.add_argument('--lambda_cycle', type=float, default=5, help='weight for cycle loss')
     parser.add_argument('--lambda_cls', type=float, default=2, help='weight for domain classification loss')
     
     parser.add_argument('--lambda_identity', type=float, default=2, help='weight for identity loss')
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     # Training configuration.
     
     parser.add_argument('--batch_size', type=int, default=4, help='mini-batch size')
-    parser.add_argument('--num_iters', type=int, default=200000, help='number of total iterations for training D')
+    parser.add_argument('--num_iters', type=int, default=300000, help='number of total iterations for training D')
     parser.add_argument('--num_iters_decay', type=int, default=100000, help='number of iterations for decaying lr')
     parser.add_argument('--g_lr', type=float, default=0.0001, help='learning rate for G')
     parser.add_argument('--d_lr', type=float, default=0.0001, help='learning rate for D')
